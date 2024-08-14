@@ -20,21 +20,26 @@ export default function ChatRoom() {
   return (
     <main className="flex flex-col min-h-screen bg-gray-100 ">
       <div className="flex-grow overflow-y-auto p-4 mb-16">
+        {/* Map messages */}
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`mb-4 p-2 rounded-lg ${
-              message.sender === "User" ? "bg-blue-500 text-white self-end ml-auto item" : "bg-gray-200 text-gray-800 self-start mr-auto"
+            className={`mb-4 p-2 rounded-lg flex ${
+              message.sender === "User" ? "justify-end" : "justify-start"
             }`}
           >
-            <p className="font-bold">{message.sender}</p>
-            <p>{message.text}</p>
+            <div className={`p-2 rounded-lg  ${
+              message.sender === "User" ? "bg-blue-500 text-white text-right " : "bg-gray-200 text-gray-800 text-left"
+            }`}>
+              <p className="font-bold">{message.sender}</p>
+              <p>{message.text}</p>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Chat Input */}
-      <form onSubmit={handleSendMessage} className="p-4 bg-white  fixed bottom-0 left-0 right-0">
+      <form onSubmit={handleSendMessage} className="p-4 bg-white fixed bottom-0 left-0 right-0">
         <div className="flex">
           <input
             type="text"
