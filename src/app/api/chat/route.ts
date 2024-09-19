@@ -1,20 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ollama from 'ollama';
+import axios from 'axios';
 
 export async function POST(req: NextRequest) {
   const { message } = await req.json();
 
   try {
-    const response = await ollama.chat({
-      model: "llama3.1",
-      messages: [{ role: "user", content: message }],
-      stream: true
+    // Make a request to the Flask server
+    const response = await axios.post('http://localhost:5000/generate_sql', {
+      prompt: message
     });
-    const responseChunks : string[] = [];
-    for await (const chunk of response) {
-      responseChunks.push(chunk.message.content);
-    }
-    return NextResponse.json({ response: responseChunks.join("") });
+
+    // Return the SQL query from the Flask server
+    return NextResponse.json({ response: response.data.sql_query });
     
   } catch (error) {
     console.error("Error in AI response:", error);
